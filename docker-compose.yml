@@ -7,7 +7,7 @@ services:
     php-fpm:
         build:
             context: ./php-fpm
-            dockerfile: Dockerfile-70
+            dockerfile: Dockerfile-56
         volumes_from:
             - application
         expose:
@@ -20,19 +20,20 @@ services:
     application:
         build: ./application
         volumes:
-            - ../:/var/www/laravel
+            - ../src/:/var/www/laravel
 
 ### Databases Data Container ################################
 
     data:
         build: ./data
         volumes:
-            - /var/lib/mysql:/var/lib/mysql
-            - /var/lib/postgres:/var/lib/postgres
-            - /var/lib/mariadb:/var/lib/mariadb
-            - /var/lib/memcached:/var/lib/memcached
-            - /var/lib/neo4j:/var/lib/neo4j/data
-            - /var/lib/redis:/data
+#            - /var/lib/postgres:/var/lib/postgres
+#            - /var/lib/mariadb:/var/lib/mariadb
+#            - /var/lib/memcached:/var/lib/memcached
+#            - /var/lib/neo4j:/var/lib/neo4j/data
+#            - /var/lib/redis:/data
+            - ../data/mysql:/var/lib/mysql
+            - ../logs/mysql:/var/log/mysql
 
 ### Nginx Server Container ##################################
 
@@ -41,7 +42,7 @@ services:
         volumes_from:
             - application
         volumes:
-            - ./logs/nginx/:/var/log/nginx
+            - ../logs/nginx/:/var/log/nginx
         ports:
             - "80:80"
             - "443:443"
