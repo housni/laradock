@@ -34,6 +34,7 @@ services:
 #            - /var/lib/redis:/data
             - ../data/mysql:/var/lib/mysql
             - ../logs/mysql:/var/log/mysql
+#            - /var/lib/mongo:/data/db
 
 ### Nginx Server Container ##################################
 
@@ -102,6 +103,15 @@ services:
         volumes_from:
             - data
 
+### MongoDB Container #######################################
+
+    mongo:
+        build: ./mongo
+        ports:
+            - "27017:27017"
+        volumes_from:
+            - data
+
 ### Redis Container #########################################
 
     redis:
@@ -144,7 +154,10 @@ services:
 ### Workspace Utilities Container ###########################
 
     workspace:
-        build: ./workspace
+        build:
+            context: ./workspace
+            args:
+                INSTALL_PRESTISSIMO: ${INSTALL_PRESTISSIMO}
         volumes_from:
             - application
         tty: true
