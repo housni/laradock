@@ -26,6 +26,13 @@ This is just one way to use it.
     
     # Run Nginx and MySQL in Docker. This won't work if you have Apache/Nginx or MySQL running locally because by default, we are using the default ports (80 & 3306). So, make sure you stop those services first.
     $ docker-compose up -d nginx mysql
+
+    # From the host machine, find your Dockers IP address so that you can use it in .env to connect to your database which is also on Docker.
+    # For Windows & Mac:
+    $ docker-machine ip default
+    # For Linux:
+    $ ifconfig docker0 | grep 'inet' | cut -d: -f2 | awk '{ print $1}' | head -n1
+    # By default, the IP is 172.17.0.1
     
     # Enter Workspace in case you need to run composer update or any of the artisan commands, etc.
     $ docker-compose run workspace bash
@@ -33,12 +40,6 @@ This is just one way to use it.
     # Once inside the 'workspace' docker instance, you can set up Laravel:
     $ chmod -R 777 storage bootstrap/cache
     $ composer install
-    
-    # Find your Dockers IP address so that you can use it in .env to connect to your database which is also on Docker.
-    # For Windows & Mac:
-    $ docker-machine ip default
-    # For Linux:
-    $ ifconfig docker0 | grep 'inet' | cut -d: -f2 | awk '{ print $1}' | head -n1
     
     # Now, create the .env file...
     $ cp .env.example .env
